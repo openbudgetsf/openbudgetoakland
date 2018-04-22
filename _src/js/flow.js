@@ -1,3 +1,5 @@
+import config from './config.js';
+
 var margin = {top: 20, right: 1, bottom: 6, left: 1},
     width = 1140 - margin.left - margin.right,
     height = 630 - margin.top - margin.bottom;
@@ -82,11 +84,11 @@ svg.append('linearGradient')
     .attr("stop-color", function(d) { return d.color; });
 
 // wrangle the data
-function data_wrangle(dataset, fy){
+window.data_wrangle = (dataset, fy) => {
     var newdata = dataset.filter(function(v){
         return v.budget_year == fy
     })
-    rev_order = [
+    var rev_order = [
       // keep variations of the same label on a single line
       "Property Tax", 
       "Business License Tax", 
@@ -107,10 +109,10 @@ function data_wrangle(dataset, fy){
       "Internal Service Funds",
       "Gas Tax", "Gasoline Tax",
     ];
-    rev = newdata.filter(function(v,i,a){
+    var rev = newdata.filter(function(v,i,a){
         return v.account_type == "Revenue";
     });
-    revcats = d3.nest()
+    var revcats = d3.nest()
         .key(function(d){
             return d.account_category;
         })
@@ -118,7 +120,7 @@ function data_wrangle(dataset, fy){
             return rev_order.indexOf(a) - rev_order.indexOf(b);
         })
         .key(function(d){
-            if (d.fund_code == "1010") {
+            if (d.fund_code == config.flow.generalFundCode) {
                 return "General Fund";
             } else {
                 return "Non-discretionary funds";
@@ -132,9 +134,9 @@ function data_wrangle(dataset, fy){
             return values;
         })
         .entries(rev);
-    nodes = [{"name": "General Fund", "type": "fund", "order": 0}, {"name": "Non-discretionary funds", "type": "fund", "order": 1}];
-    nodeoffset = nodes.length;
-    links = [];
+    var nodes = [{"name": "General Fund", "type": "fund", "order": 0}, {"name": "Non-discretionary funds", "type": "fund", "order": 1}];
+    var nodeoffset = nodes.length;
+    var links = [];
     for (var i = 0; i < revcats.length; i++){
         nodes.push({"name": revcats[i].key, "type": "revenue"});
         for (var x = 0; x < revcats[i].values.length; x++) {
@@ -151,10 +153,10 @@ function data_wrangle(dataset, fy){
         }
 
     }
-    exp = newdata.filter(function(v,i,a){
+    var exp = newdata.filter(function(v,i,a){
         return v.account_type == "Expense";
     });
-    exp_order = [
+    var exp_order = [
         // keep variations of the same label on a single line
         "Police Department", "Police",
         "Police Commission",
@@ -183,7 +185,7 @@ function data_wrangle(dataset, fy){
         "Public Works", "Oakland Public Works",
         "Debt Service & Misc."
     ];
-    expdivs = d3.nest()
+    var expdivs = d3.nest()
         .key(function(d){
             if (d.department == "Non-Departmental") {
                 return "Debt Service & Misc."
@@ -194,7 +196,7 @@ function data_wrangle(dataset, fy){
             return exp_order.indexOf(a) - exp_order.indexOf(b);
         })
         .key(function(d){
-            if (d.fund_code == "1010") {
+            if (d.fund_code == config.flow.generalFundCode) {
                 return "General Fund";
             } else {
                 return "Non-discretionary funds";
@@ -228,7 +230,7 @@ function data_wrangle(dataset, fy){
 }
 
 // render the sankey
-function do_with_budget(data) {
+window.do_with_budget = data => {
 
   svg.select("#chart").remove();
 

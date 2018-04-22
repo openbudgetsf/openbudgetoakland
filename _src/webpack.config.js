@@ -4,6 +4,7 @@ module.exports = {
   context: path.resolve(__dirname, 'js'),
   entry: {
     compare: ['babel-polyfill', './compare/index.jsx'],
+    flow: ['babel-polyfill', './flow.js']
   },
   output: {
     filename: '[name].bundle.js',
