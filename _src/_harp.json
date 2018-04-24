@@ -1,6 +1,7 @@
 {
   "globals": {
     "title": "Open Budget: Oakland",
-    "site_name": "Open Budget: Oakland"
+    "site_name": "Open Budget: Oakland",
+    "header_data_url": "http://data.openoakland.org/dataset/city-oakland-budget"
   }
 }
