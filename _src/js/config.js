@@ -1,10 +1,10 @@
 export default {
   compare: {
-    apiBase: 'https://live-open-budget-oakland-administration.pantheonsite.io',
-    totalsUrlSuffix: '',
-    breakdownUrlSuffix: ''
+    apiBase: '/data/compare',
+    totalsUrlSuffix: '/totals.json',
+    breakdownUrlSuffix: '.json'
   },
   flow: {
-    generalFundCode: '1010'
+    generalFundCode: '1G'
   }
 };
